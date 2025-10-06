@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fogo Dom</title>
+</head>
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+    }
+    #fireCanvas {
+        border: 2px solid gray;
+        border-radius: 10px;
+    }
+    #areaCanvas {
+        width: 100%;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: rgb(7, 7, 7);
+        flex-direction: column;
+        color: white;
+        font-family: Arial, Helvetica, sans-serif;
+    }
+</style>
+<body>
+    <div id="areaCanvas">
+        <h1>Fire Doom!</h1>
+        <canvas id="fireCanvas" width="600" height="600"></canvas>
+    </div>
+</body>
+<script>
+    const fireColorsPalette = [
+        {"b":7,"g":7,"r":7},
+        {"b":31,"g":7,"r":7},
+        {"b":47,"g":15,"r":7},
+        {"b":71,"g":15,"r":7},
+        {"b":87,"g":23,"r":7},
+        {"b":103,"g":31,"r":7},
+        {"b":119,"g":31,"r":7},
+        {"b":143,"g":39,"r":7},
+        {"b":159,"g":47,"r":7},
+        {"b":175,"g":63,"r":7},
+        {"b":191,"g":71,"r":7},
+        {"b":199,"g":71,"r":7},
+        {"b":223,"g":79,"r":7},
+        {"b":223,"g":87,"r":7},
+        {"b":223,"g":87,"r":7},
+        {"b":215,"g":95,"r":7},
+        {"b":215,"g":95,"r":7},
+        {"b":215,"g":103,"r":15},
+        {"b":207,"g":111,"r":15},
+        {"b":207,"g":119,"r":15},
+        {"b":207,"g":127,"r":15},
+        {"b":207,"g":135,"r":23},
+        {"b":199,"g":135,"r":23},
+        {"b":199,"g":143,"r":23},
+        {"b":199,"g":151,"r":31},
+        {"b":191,"g":159,"r":31},
+        {"b":191,"g":159,"r":31},
+        {"b":191,"g":167,"r":39},
+        {"b":191,"g":167,"r":39},
+        {"b":191,"g":175,"r":47},
+        {"b":183,"g":175,"r":47},
+        {"b":183,"g":183,"r":47},
+        {"b":183,"g":183,"r":55},
+        {"b":207,"g":207,"r":111},
+        {"b":223,"g":223,"r":159},
+        {"b":239,"g":239,"r":199},
+        {"b":255,"g":255,"r":255}
+    ]
+    const canvas = document.querySelector("#fireCanvas");
+    const context = canvas.getContext('2d');
+
+    const fireArray = []
+    const fireWidth = 100
+    const fireHeigth = 100
+
+    
+    
+    function start() {
+        fireEstructure()
+        createFireSource()
+        // fireUpdateEstruct()
+        // setInterval(fireUpdateEstruct, 50)
+        requestAnimationFrame(fireUpdateEstruct)
+    }
+
+    function fireEstructure() {
+        const sumFire = fireWidth * fireHeigth
+
+        for(let firePixel = 0; firePixel < sumFire; firePixel++) {
+            
+            fireArray.push(0)
+
+        }
+
+   
+    }
+
+    function fireUpdateEstruct() {
+        fireArray.forEach((el, firePixel) => {
+            const decay = Math.floor(Math.random() * 2.4)
+            if(!(firePixel >= (fireArray.length - fireWidth))) {
+                fireArray[firePixel + decay] = fireArray[firePixel + fireWidth] > 0 ?  Math.abs(fireArray[firePixel + fireWidth] - decay) : 0
+            } 
+            
+        })
+        fireRender()
+        requestAnimationFrame(fireUpdateEstruct)
+    }
+
+    function fireRender() {
+        context.clearRect(0, 0, canvas.width, canvas.height)
+        const tamanhoPixel = canvas.width / fireWidth
+        let linha = 0
+        let coluna = 0
+
+        for(let index = 0; index < fireArray.length; index++) {
+            if(coluna === fireWidth) {
+                linha += tamanhoPixel
+                coluna = 0
+            }
+            let aux = coluna * tamanhoPixel
+            createPixelFire(aux, linha, fireArray[index])
+            coluna += 1
+        }
+    }
+
+    function createPixelFire(x = 0, y = 0, valor) {
+        const tamanhoPixel = canvas.width / fireWidth
+        const {r, g, b} = fireColorsPalette[valor]
+        context.fillStyle = `rgb(${b}, ${g}, ${r})`
+        context.fillRect(x, y, tamanhoPixel, tamanhoPixel)
+        
+        
+    }
+
+    function createFireSource() {
+        fireArray.forEach((el, firePixel) => {
+            if(firePixel >= (fireArray.length - fireWidth)) {
+                fireArray[firePixel] = 36
+            } 
+        })
+    }
+
+    start()
+</script>
+</html>
