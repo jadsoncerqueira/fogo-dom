@@ -5,9 +5,10 @@ Feito para praticar **estrutura de dados, algoritmos e renderização gráfica**
 
 ---
 
-## 🚀 O que faz?
+## 🚀 Demonstração
 
 O código gera uma matriz de pixels que simulam chamas se movendo de baixo para cima, com base em uma paleta de cores que varia do preto ao branco, passando por tons de vermelho, laranja e amarelo como no efeito original do Doom.
+[VEJA FUNCIONANDO!](https://github.com/jadsoncerqueira)
 
 ---
 
